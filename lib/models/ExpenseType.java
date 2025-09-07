@@ -4,4 +4,6 @@ public  enum ExpenseType {
     RESTAURANT,
     AIRFARE,
     ENTERTAINMENT,
+    SUPPLIES,
+    HOTEL
 }

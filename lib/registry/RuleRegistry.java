@@ -8,6 +8,7 @@ import lib.services.rules.ExpenseRule;
 import lib.services.rules.TripRule;
 import lib.services.rules.impl.DisallowRule;
 import lib.services.rules.impl.MaxAmountRule;
+import lib.services.rules.impl.TripMealTotalMaxRule;
 import lib.services.rules.impl.TripTotalMaxRule;
 
 public class RuleRegistry {
@@ -33,6 +34,8 @@ public class RuleRegistry {
 
     public static List<TripRule> getAllTripRulesRegistry() {
         return List.of(
-                new TripTotalMaxRule(1000));
+                new TripTotalMaxRule(2000),
+                new TripMealTotalMaxRule(1000)
+        );
     }
 }

@@ -5,12 +5,14 @@ public class Expense {
     private final String tripId;
     private final Double amountIUsd;
     private final ExpenseType expenseType;
+    private final String vendorName;
 
-    public Expense(String expenseId, String tripId, Double amountUsd, ExpenseType expenseType) {
+    public Expense(String expenseId, String tripId, Double amountUsd, ExpenseType expenseType, String vendorName) {
         this.expenseId = expenseId;
         this.tripId = tripId;
         this.amountIUsd = amountUsd;
         this.expenseType = expenseType;
+        this.vendorName = vendorName;
     }
 
     public String getExpenseId() {
@@ -27,5 +29,9 @@ public class Expense {
 
     public ExpenseType getExpenseType() {
         return expenseType;
+    }
+
+    public String getVendorName() {
+        return vendorName;
     }
 }

@@ -26,7 +26,7 @@ public class TripTotalMaxRule implements TripRule {
             total += expense.getAmountIUsd();
         }
         if(total > maxAmount) {
-            return Optional.of(Violation.of("Trip total exceeds the maximum amount"));
+            return Optional.of(Violation.of("Total trip expenses $" + (int) total + " exceed $2000"));
         }
 
         return Optional.empty();

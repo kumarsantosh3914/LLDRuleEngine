@@ -24,39 +24,32 @@ public class RuleManagerRunner {
         List<ExpenseRule> allExpenseRulesRegistry = RuleRegistry.getAllExpenseRulesRegistry();
         List<TripRule> tripRulesRegistry = RuleRegistry.getAllTripRulesRegistry();
 
-        // Per-expense results
+        System.out.println("Expense Violations:");
         for (Expense expense : expenses) {
             List<String> reasons = new java.util.ArrayList<>();
-
-            for (ExpenseRule rule : expenseRulesRegistry.getOrDefault(expense.getExpenseType(), List.of())) {
-                java.util.Optional<Violation> v = rule.check(expense);
-                v.ifPresent(x -> reasons.add(x.getMessage()));
+            for (ExpenseRule r : expenseRulesRegistry.getOrDefault(expense.getExpenseType(), List.of())) {
+                r.check(expense).ifPresent(v -> reasons.add(v.getMessage()));
             }
-            for (ExpenseRule rule : allExpenseRulesRegistry) {
-                java.util.Optional<Violation> v = rule.check(expense);
-                v.ifPresent(x -> reasons.add(x.getMessage()));
+            for (ExpenseRule r : allExpenseRulesRegistry) {
+                r.check(expense).ifPresent(v -> reasons.add(v.getMessage()));
             }
-
-            String status = reasons.isEmpty() ? "APPROVED" : "REJECTED";
-            System.out.println("Expense " + expense.getExpenseId() + ": " + status);
-            if (!reasons.isEmpty()) {
-                for (String r : reasons)
-                    System.out.println(" - " + r);
+            if (reasons.isEmpty()) {
+                System.out.println(expense.getExpenseId() + " -> APPROVED");
+            } else {
+                System.out.println(expense.getExpenseId() + " -> REJECTED: [" + reasons.get(0) + "]");
             }
         }
 
-        // Per-trip results
+        System.out.println("Trip Violations:");
         List<String> tripReasons = new java.util.ArrayList<>();
-        for (TripRule rule : tripRulesRegistry) {
-            java.util.Optional<Violation> v = rule.check(expenses);
-            v.ifPresent(x -> tripReasons.add(x.getMessage()));
+        for (TripRule r : tripRulesRegistry) {
+            r.check(expenses).ifPresent(v -> tripReasons.add(v.getMessage()));
         }
-
-        String tripStatus = tripReasons.isEmpty() ? "OK" : "VIOLATIONS";
-        System.out.println("Trip: " + tripStatus);
-        if (!tripReasons.isEmpty()) {
-            for (String r : tripReasons)
-                System.out.println(" - " + r);
+        String tripId = expenses.isEmpty() ? "" : expenses.get(0).getTripId();
+        if (tripReasons.isEmpty()) {
+            System.out.println(tripId + " -> OK");
+        } else {
+            System.out.println(tripId + " -> VIOLATIONS: [" + String.join("; ", tripReasons) + "]");
         }
     }
 }

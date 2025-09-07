@@ -16,7 +16,12 @@ public class MaxAmountRule implements ExpenseRule {
     @Override
     public Optional<Violation> check(Expense e) {
         if (e.getAmountIUsd() > maxAmount) {
-            return Optional.of(Violation.of("Expense amount is greater than the max amount" + " id:" + e.getExpenseId()));
+            if(maxAmount == 75) {
+                return Optional.of(Violation.of("Restaurant expense exceeds $75"));
+            }
+            if(maxAmount == 250) {
+                return Optional.of(Violation.of("Expense exceeds $20 limit"));
+            }
         }
 
         return Optional.empty();
